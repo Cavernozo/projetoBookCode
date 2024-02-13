@@ -139,29 +139,23 @@ def proxima_fase(nfase):
 #variavel global para o indice da eliminatoria
 indeice_eliminatoria = 0 
 def main():
-    
     #chamar procedimento apurar equipes
     equipes_apuradas = apurar_equipes()
-    
+        
     for team in equipes_apuradas:
         print(team)
     print()
-    
-    while True:
 
-        #chamar procedimento criar_calendario
-        calendario = criar_calenario(equipes_apuradas)
-        for team in calendario:
-            print(team)
-            print()
-    
-        #chamar procedimento vencedores
-        nFase = vencedores(calendario)
-        if len(nFase) == 1:
-            print(f"{nFase} é o campeao!")
-            break
-        proxima_fase(nFase)
+    calendario = criar_calenario(equipes_apuradas)
+    for team in calendario:
+        print(team)
+    print()
         
-
+        
+    #chamar procedimento vencedores
+    nFase = vencedores(calendario)
+    if len(nFase) == 1:
+        print(f"{nFase} é o campeao!")
+    proxima_fase(nFase)
 if __name__ == "__main__":
     main()
