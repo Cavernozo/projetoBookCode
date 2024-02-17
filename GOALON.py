@@ -133,29 +133,50 @@ def proxima_fase(nfase):
         print(team)
         print()
     print(len(nfase))
-    n_calendario = criar_calenario(nfase)
-    vencedores(n_calendario)
+    #verificando se a mais de uma equipe na proxima fase
+    if len(nfase) >= 2:
+
+        n_calendario = criar_calenario(nfase)
+        for team in n_calendario:
+            print(team)
+        print()
+    #chamando a funçao de determinar vencedores para a proxima fase
+        vencedores_n_fase = vencedores(n_calendario)
+        if len(vencedores_n_fase) >= 2:
+            #chamando recursivamentea funçao para a proxima fase
+            proxima_fase(vencedores_n_fase)
+        else:
+            print("Fim do torneio")
+    else:
+        print("Fim do torneio")
 
 #variavel global para o indice da eliminatoria
 indeice_eliminatoria = 0 
 def main():
     #chamar procedimento apurar equipes
     equipes_apuradas = apurar_equipes()
-        
+
     for team in equipes_apuradas:
         print(team)
     print()
 
+    
     calendario = criar_calenario(equipes_apuradas)
     for team in calendario:
         print(team)
     print()
+            
         
-        
-    #chamar procedimento vencedores
+        #chamar procedimento vencedores
     nFase = vencedores(calendario)
-    if len(nFase) == 1:
-        print(f"{nFase} é o campeao!")
-    proxima_fase(nFase)
+    if len(nFase) >= 2:
+        proxima_fase(nFase)
+    else:
+        print("Fim do torneio")
+    
+            
+            
+
+
 if __name__ == "__main__":
     main()
