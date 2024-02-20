@@ -1,4 +1,5 @@
 import random
+import pandas as pd
 
 def apurar_equipes():
     equipes_apuradas = [] #lista vazia
@@ -79,13 +80,14 @@ def vencedores(calendario):
         #obtendo gols equipes casa e fora
         gols_casa = obter_Gols()
         gols_fora = obter_Gols()
-        print(f"resultados :{eliminatoria} - {hora} - {data} - {eq_casa} {gols_casa} vc {gols_fora} {eq_fora} - estadio: {estadio}")
+        print(f"{'-=' * 20} Resultados {'-=' * 20}")
+        print(f"{eliminatoria} - {hora} - {data} - {eq_casa[0]} {gols_casa} vc {gols_fora} {eq_fora[0]} - estadio: {estadio}")
         if gols_casa > gols_fora:
-            print(f"Equipe {eq_casa} venceu!")
+            print(f"Equipe {eq_casa[0]} venceu!")
             print()
             eq_vencedores.append(eq_casa)
         elif gols_fora > gols_casa:
-            print(f"Equipe {eq_fora} venceu!")
+            print(f"Equipe {eq_fora[0]} venceu!")
             print()
             eq_vencedores.append(eq_fora)
         else:
@@ -94,11 +96,11 @@ def vencedores(calendario):
             p_casa = penalti()
             p_fora = penalti()
             if p_casa > p_fora:
-                print(f"Equipe {eq_casa} ganhou na decisao de penaltis por {p_casa} vs {p_fora}")
+                print(f"Equipe {eq_casa[0]} ganhou na decisao de penaltis por {p_casa} vs {p_fora}")
                 print()
                 eq_vencedores.append(eq_casa)
             elif p_fora > p_casa:
-                print(f"Equipe {eq_fora} ganhou na decisao de penaltis por {p_fora} vs {p_casa}")
+                print(f"Equipe {eq_fora[0]} ganhou na decisao de penaltis por {p_fora} vs {p_casa}")
                 print()
                 eq_vencedores.append(eq_fora)
             else:
@@ -107,11 +109,11 @@ def vencedores(calendario):
                     p_casa = random.randint(0, 1)
                     p_fora = random.randint(0, 1)
                     if p_casa > p_fora:
-                        print(f"Equipe {eq_casa} ganhou na decisao de penaltis por {p_casa} vs {p_fora}")
+                        print(f"Equipe {eq_casa[0]} ganhou na decisao de penaltis por {p_casa} vs {p_fora}")
                         print()
                         eq_vencedores.append(eq_casa)
                     else:
-                        print(f"Equipe {eq_fora} ganhou na decisao de penaltis por {p_fora} vs {p_casa}")
+                        print(f"Equipe {eq_fora[0]} ganhou na decisao de penaltis por {p_fora} vs {p_casa}")
                         print()
                         eq_vencedores.append(eq_fora)
     return eq_vencedores    
@@ -130,53 +132,44 @@ def penalti():
 def proxima_fase(nfase):
     print("Classificados para nova fase!")
     for team in nfase:
-        print(team)
+        print(team[0])
         print()
-    print(len(nfase))
+    
     #verificando se a mais de uma equipe na proxima fase
     if len(nfase) >= 2:
 
         n_calendario = criar_calenario(nfase)
-        for team in n_calendario:
-            print(team)
+
+        print(f"{'-=' * 23} Calendario de jogos {'-=' * 23}")
+        print(pd.DataFrame(n_calendario, columns = ['Fase', 'Hora', 'Data', 'Esatdio', 'Equipe casa', 'Equipe fora']))
         print()
+
     #chamando a funçao de determinar vencedores para a proxima fase
         vencedores_n_fase = vencedores(n_calendario)
         if len(vencedores_n_fase) >= 2:
             #chamando recursivamentea funçao para a proxima fase
             proxima_fase(vencedores_n_fase)
         else:
-            print("Fim do torneio")
-    else:
-        print("Fim do torneio")
+            print(f"{vencedores_n_fase[0][0]} é campeão da copa do mundo!!!")
 
 #variavel global para o indice da eliminatoria
 indeice_eliminatoria = 0 
 def main():
     #chamar procedimento apurar equipes
     equipes_apuradas = apurar_equipes()
-
-    for team in equipes_apuradas:
-        print(team)
+    print(f"{'-=' * 10} Eequipes apuradas para a Copa do Mundo {'-=' * 10}")
+    print(pd.DataFrame(equipes_apuradas, columns = ['Pais', 'Regiao', 'Ranking']))
     print()
-
     
     calendario = criar_calenario(equipes_apuradas)
-    for team in calendario:
-        print(team)
+    print(f"{'-=' * 23} Calendario de jogos {'-=' * 23}")
+    print(pd.DataFrame(calendario, columns = ['Fase', 'Hora', 'Data', 'Esatdio', 'Equipe casa', 'Equipe fora']))
     print()
-            
         
         #chamar procedimento vencedores
     nFase = vencedores(calendario)
     if len(nFase) >= 2:
         proxima_fase(nFase)
-    else:
-        print("Fim do torneio")
     
-            
-            
-
-
 if __name__ == "__main__":
     main()
